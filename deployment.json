@@ -1,0 +1,16 @@
+{
+  "network": "bscTestnet",
+  "deployer": "0x3aF7688EF7e5dd52743726A5ccD15364891B09F7",
+  "deployedAt": "2026-09-26T12:40:44.250Z",
+  "contracts": {
+    "MockUSDT": "0x79F41C959e47276fD860242413d6fFcE9cad5eA2",
+    "ArisanFactory": "0xDf76714269D68F78FF491BbDe2e3f331b9af434E",
+    "ArisanGroup": "0xADE66d006fA341cD5c3309DBf2e80fFAd719A7d8"
+  },
+  "parameters": {
+    "contributionAmount": "100 mUSDT",
+    "depositAmount": "100 mUSDT",
+    "maxMembers": 3,
+    "roundDuration": "86400 seconds (24 hours)"
+  }
+}

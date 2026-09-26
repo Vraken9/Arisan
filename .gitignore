@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# Environment variables (JANGAN commit!)
+.env
+
+# Hardhat
+cache/
+artifacts/
+typechain-types/
+
+# Coverage
+coverage/
+coverage.json
+
+# OS
+.DS_Store
+Thumbs.db
