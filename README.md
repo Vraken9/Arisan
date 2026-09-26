@@ -63,6 +63,20 @@ npx hardhat test
 npx hardhat run scripts/demo.js
 ```
 
+### Menjalankan Frontend dApp (Vite + React)
+
+Aplikasi Web3 frontend ArisanChain dibangun dengan Vite + React, Vanilla CSS Glassmorphism, dan Ethers.js v6.
+
+```bash
+# Menjalankan frontend dev server
+npm run frontend
+```
+
+Buka browser di **`http://localhost:5173`**.
+- Hubungkan MetaMask ke **BNB Smart Chain Testnet (Chain ID: 97)**.
+- Gunakan tombol **"Faucet mUSDT"** di pojok kanan atas untuk klaim 1,000 mUSDT instan ke wallet Anda.
+- Buat grup baru atau masuk ke grup yang sudah ada untuk mencoba ronde arisan.
+
 ### Deploy ke BSC Testnet
 
 1. Copy `.env.example` menjadi `.env` dan isi private key + BscScan API key
