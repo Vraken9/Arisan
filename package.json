@@ -7,7 +7,10 @@
     "compile": "npx hardhat compile",
     "test": "npx hardhat test",
     "demo": "npx hardhat run scripts/demo.js",
-    "deploy:testnet": "npx hardhat run scripts/deploy.js --network bscTestnet"
+    "deploy:testnet": "npx hardhat run scripts/deploy.js --network bscTestnet",
+    "mint:testnet": "npx hardhat run scripts/mint-tokens.js --network bscTestnet",
+    "frontend": "npm --prefix frontend run dev",
+    "build:frontend": "npm --prefix frontend run build"
   },
   "keywords": [
     "arisan",
