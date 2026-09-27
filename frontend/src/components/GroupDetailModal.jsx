@@ -13,7 +13,8 @@ import {
   KeyRound, 
   ArrowRight,
   TrendingUp,
-  Coins
+  Coins,
+  AlertTriangle
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { ethers } from 'ethers';
@@ -25,6 +26,7 @@ import {
   getReadOnlyProvider,
   shortenAddress, 
   formatDuration, 
+  formatTimestamp,
   generateRandomSecret, 
   computeCommitmentHash 
 } from '../utils/web3';
@@ -321,6 +323,31 @@ export default function GroupDetailModal({
     } catch (err) {
       console.error(err);
       setError(err.reason || err.message || 'Gagal menarik deposit.');
+    } finally {
+      setActionLoading(false);
+      setActionStatus('');
+    }
+  };
+
+  // ACTION 7: Slash Defaulter
+  const handleSlash = async (defaulterAddress) => {
+    if (!currentAccount) return;
+    setError(null);
+    setActionLoading(true);
+    setActionStatus(`Menyita deposit jaminan ${shortenAddress(defaulterAddress, 3)}...`);
+
+    try {
+      const { signer } = await getBrowserProviderAndSigner();
+      const group = getGroupContract(groupAddress, signer);
+
+      const tx = await group.slashDefaulter(defaulterAddress);
+      const receipt = await tx.wait();
+
+      if (onTxSuccess) onTxSuccess('⚡ Defaulter Berhasil Di-Slash!', receipt.hash);
+      await loadGroupDetails();
+    } catch (err) {
+      console.error(err);
+      setError(err.reason || err.message || 'Gagal mengeksekusi slash. Pastikan batas waktu (deadline) ronde telah terlewati.');
     } finally {
       setActionLoading(false);
       setActionStatus('');
@@ -721,6 +748,79 @@ export default function GroupDetailModal({
                         <CheckCircle2 size={16} /> Anda sudah membayar kontribusi untuk Ronde {groupData.currentRound + 1}!
                       </div>
                     )}
+
+                    {/* Defaulter / Slash Section */}
+                    {(() => {
+                      const unpayedMembers = payoutOrder.filter(addr => !roundContributors.includes(addr.toLowerCase()));
+                      const nowSec = Math.floor(Date.now() / 1000);
+                      const isDeadlinePassed = groupData.roundDeadline > 0 && nowSec > groupData.roundDeadline;
+
+                      if (unpayedMembers.length === 0) return null;
+
+                      return (
+                        <div style={{
+                          marginTop: '20px',
+                          padding: '16px',
+                          borderRadius: '12px',
+                          background: isDeadlinePassed ? 'rgba(246, 70, 93, 0.12)' : 'rgba(255, 255, 255, 0.03)',
+                          border: `1px solid ${isDeadlinePassed ? 'rgba(246, 70, 93, 0.35)' : 'var(--border-subtle)'}`,
+                          textAlign: 'left'
+                        }}>
+                          <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            color: isDeadlinePassed ? 'var(--danger)' : 'var(--warning)',
+                            fontWeight: 700,
+                            fontSize: '0.9rem',
+                            marginBottom: '8px'
+                          }}>
+                            <AlertTriangle size={18} />
+                            <span>
+                              {isDeadlinePassed 
+                                ? 'Peringatan: Anggota Gagal Bayar (Lewat Deadline)!' 
+                                : `Tenggat Waktu Ronde: ${formatTimestamp(groupData.roundDeadline)}`}
+                            </span>
+                          </div>
+                          <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '12px', lineHeight: '1.4' }}>
+                            {isDeadlinePassed 
+                              ? 'Batas waktu kontribusi ronde telah habis. Anda dapat mengeksekusi Slash Defaulter untuk menyita deposit jaminan milik anggota yang belum bayar demi melunasi ronde penerima:'
+                              : `Terdapat ${unpayedMembers.length} anggota yang belum menyetor kontribusi ronde ini. Jika deadline habis dan anggota belum bayar, tombol Slash Defaulter akan aktif otomatis di sini untuk menyita uang jaminan mereka.`}
+                          </p>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                            {unpayedMembers.map((unpayedAddr) => (
+                              <div key={unpayedAddr} style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                background: 'rgba(0, 0, 0, 0.3)',
+                                padding: '8px 12px',
+                                borderRadius: '8px',
+                                fontSize: '0.85rem'
+                              }}>
+                                <span style={{ fontFamily: 'var(--font-mono)', color: '#fff' }}>
+                                  {shortenAddress(unpayedAddr, 4)}
+                                </span>
+                                {isDeadlinePassed ? (
+                                  <button
+                                    className="btn btn-danger"
+                                    onClick={() => handleSlash(unpayedAddr)}
+                                    disabled={actionLoading}
+                                    style={{ padding: '6px 14px', fontSize: '0.8rem', fontWeight: 700 }}
+                                  >
+                                    ⚡ Eksekusi Slash Defaulter
+                                  </button>
+                                ) : (
+                                  <span style={{ color: 'var(--warning)', fontSize: '0.78rem', fontStyle: 'italic' }}>
+                                    ⏳ Menunggu Pembayaran
+                                  </span>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })()}
                   </div>
                 )}
 
