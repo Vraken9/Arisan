@@ -1,7 +1,9 @@
 {
+  "cleanUrls": true,
   "rewrites": [
+    { "source": "/pitch-deck", "destination": "/pitch-deck.html" },
     { "source": "/pitch-deck.html", "destination": "/pitch-deck.html" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/((?!pitch-deck).*)", "destination": "/index.html" }
   ],
   "headers": [
     {
