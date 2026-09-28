@@ -88,6 +88,26 @@ export default function Navbar({
 
         {/* Action Controls */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+          {/* Pitch Deck Link */}
+          <a
+            href="/pitch-deck"
+            target="_blank"
+            rel="noreferrer"
+            className="btn btn-secondary"
+            style={{
+              textDecoration: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              border: '1px solid rgba(240, 185, 11, 0.4)',
+              color: 'var(--bnb-gold)',
+            }}
+            title="Buka Interactive Pitch Deck (12 Slides)"
+          >
+            <ExternalLink size={15} />
+            <span>Pitch Deck</span>
+          </a>
+
           {/* Faucet Button (Opsi B) */}
           <button 
             className="btn btn-faucet"

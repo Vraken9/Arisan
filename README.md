@@ -3,6 +3,11 @@
   <h1>ArisanChain</h1>
   <p><strong>Protokol Arisan Terdesentralisasi dan Trustless pada Jaringan BNB Smart Chain</strong></p>
   <p>Submission Resmi untuk Indonesia Web3 Hackathon 2026</p>
+  <p>
+    <a href="https://frontend-six-tawny-83.vercel.app"><strong>🌐 Live App</strong></a> &nbsp;|&nbsp;
+    <a href="https://frontend-six-tawny-83.vercel.app/pitch-deck"><strong> Interactive Pitch Deck (12 Slides)</strong></a> &nbsp;|&nbsp;
+    <a href="https://testnet.bscscan.com/address/0xDf76714269D68F78FF491BbDe2e3f331b9af434E"><strong> BscScan Explorer</strong></a>
+  </p>
 </div>
 
 ---
