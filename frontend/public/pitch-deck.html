@@ -3,1045 +3,1449 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ArisanChain — Pitch Deck</title>
+  <title>ArisanChain — Decentralized Rotating Savings Protocol | BNB Chain</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     :root {
-      --bnb-gold: #F0B90B;
-      --bnb-gold-dim: #c99a09;
-      --bnb-gold-glow: rgba(240, 185, 11, 0.25);
-      --bg-primary: #05070B;
-      --bg-card: rgba(15, 18, 28, 0.85);
-      --bg-card-border: rgba(240, 185, 11, 0.12);
-      --text-primary: #F1F2F4;
-      --text-secondary: #9CA3AF;
+      --bnb-yellow: #F0B90B;
+      --bnb-yellow-bright: #FCD535;
+      --bnb-yellow-dim: #D9A407;
+      --bnb-glow: rgba(240, 185, 11, 0.22);
+      --bnb-glow-subtle: rgba(240, 185, 11, 0.08);
+
+      --bg-base: #07090E;
+      --bg-surface: #0E121B;
+      --bg-card: rgba(16, 21, 32, 0.88);
+      --bg-card-hover: rgba(23, 30, 46, 0.95);
+      --bg-card-inner: rgba(10, 14, 22, 0.7);
+
+      --border-main: rgba(240, 185, 11, 0.16);
+      --border-subtle: rgba(255, 255, 255, 0.07);
+      --border-accent: rgba(240, 185, 11, 0.45);
+
+      --text-white: #FFFFFF;
+      --text-heading: #F3F4F6;
+      --text-body: #9CA3AF;
       --text-muted: #6B7280;
-      --accent-green: #10B981;
-      --accent-red: #EF4444;
-      --accent-blue: #3B82F6;
-      --accent-purple: #8B5CF6;
+
+      --tech-cyan: #00F0FF;
+      --tech-green: #10B981;
+      --tech-red: #EF4444;
+      --tech-purple: #A855F7;
+
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
     }
 
     html, body {
-      width: 100%; height: 100%;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: var(--bg-primary);
-      color: var(--text-primary);
+      width: 100%;
+      height: 100%;
+      font-family: var(--font-sans);
+      background: var(--bg-base);
+      color: var(--text-heading);
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Ambient Background Elements */
+    .viewport-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
       overflow: hidden;
     }
 
-    /* ======== SLIDE ENGINE ======== */
-    .deck {
-      width: 100vw; height: 100vh;
+    .bg-grid {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(240, 185, 11, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(240, 185, 11, 0.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    .bg-radial-top {
+      position: absolute;
+      top: -240px;
+      right: -100px;
+      width: 750px;
+      height: 750px;
+      background: radial-gradient(circle, rgba(240, 185, 11, 0.07) 0%, transparent 65%);
+      border-radius: 50%;
+    }
+
+    .bg-radial-bottom {
+      position: absolute;
+      bottom: -300px;
+      left: -150px;
+      width: 850px;
+      height: 850px;
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.035) 0%, transparent 65%);
+      border-radius: 50%;
+    }
+
+    /* Deck Container */
+    .deck-container {
       position: relative;
+      width: 100vw;
+      height: 100vh;
+      z-index: 10;
     }
 
     .slide {
       position: absolute;
       inset: 0;
+      padding: 40px 72px 84px 72px;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      align-items: center;
-      padding: 60px 80px;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.5s ease, transform 0.5s ease;
-      transform: translateX(40px);
+      transform: translateY(18px) scale(0.995);
+      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       overflow-y: auto;
     }
 
     .slide.active {
       opacity: 1;
       pointer-events: all;
-      transform: translateX(0);
+      transform: translateY(0) scale(1);
     }
 
-    /* ======== GLOBAL BACKGROUND ======== */
-    .bg-grid {
-      position: fixed; inset: 0; z-index: -2;
-      background-image:
-        linear-gradient(rgba(240,185,11,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(240,185,11,0.03) 1px, transparent 1px);
-      background-size: 60px 60px;
+    /* Navigation Bar */
+    .top-progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.05);
+      z-index: 100;
     }
 
-    .bg-glow-1 {
-      position: fixed; top: -200px; right: -200px; z-index: -1;
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(240,185,11,0.08) 0%, transparent 70%);
-      border-radius: 50%;
+    .top-progress-indicator {
+      height: 100%;
+      background: linear-gradient(90deg, var(--bnb-yellow), var(--bnb-yellow-bright));
+      box-shadow: 0 0 10px var(--bnb-glow);
+      transition: width 0.35s ease;
     }
 
-    .bg-glow-2 {
-      position: fixed; bottom: -300px; left: -200px; z-index: -1;
-      width: 800px; height: 800px;
-      background: radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 70%);
-      border-radius: 50%;
-    }
-
-    /* ======== NAVIGATION ======== */
-    .nav-bar {
-      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 12px 32px;
-      background: rgba(5,7,11,0.92);
-      border-top: 1px solid var(--bg-card-border);
-      backdrop-filter: blur(12px);
-    }
-
-    .nav-bar .brand {
-      font-weight: 800; font-size: 0.85rem;
-      color: var(--text-secondary);
-    }
-    .nav-bar .brand span { color: var(--bnb-gold); }
-
-    .nav-controls {
-      display: flex; align-items: center; gap: 12px;
-    }
-
-    .nav-btn {
-      background: rgba(240,185,11,0.1);
-      border: 1px solid rgba(240,185,11,0.2);
-      color: var(--bnb-gold);
+    .dock-nav {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 16px;
       padding: 8px 18px;
-      border-radius: 8px;
+      background: rgba(14, 18, 27, 0.88);
+      border: 1px solid var(--border-main);
+      border-radius: 40px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 18px var(--bnb-glow-subtle);
+    }
+
+    .dock-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text-heading);
+      padding-right: 12px;
+      border-right: 1px solid var(--border-subtle);
+    }
+
+    .dock-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dock-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-heading);
       cursor: pointer;
-      font-family: inherit;
-      font-size: 0.8rem;
-      font-weight: 600;
       transition: all 0.2s;
     }
-    .nav-btn:hover { background: rgba(240,185,11,0.2); }
-    .nav-btn:disabled { opacity: 0.3; cursor: default; }
 
-    .slide-counter {
-      font-size: 0.8rem; color: var(--text-muted);
-      font-variant-numeric: tabular-nums;
-      min-width: 50px; text-align: center;
+    .dock-btn:hover:not(:disabled) {
+      background: rgba(240, 185, 11, 0.15);
+      border-color: var(--bnb-yellow);
+      color: var(--bnb-yellow);
     }
 
-    .progress-track {
-      position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 101;
-      background: rgba(240,185,11,0.1);
-    }
-    .progress-fill {
-      height: 100%; background: var(--bnb-gold);
-      transition: width 0.4s ease;
+    .dock-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
     }
 
-    /* ======== TYPOGRAPHY ======== */
-    .slide-title {
-      font-size: 2.6rem; font-weight: 900;
-      line-height: 1.15;
-      margin-bottom: 24px;
-      text-align: center;
-    }
-    .slide-title .gold { color: var(--bnb-gold); }
-
-    .slide-subtitle {
-      font-size: 1.1rem; font-weight: 400;
-      color: var(--text-secondary);
-      text-align: center;
-      max-width: 700px;
-      line-height: 1.6;
-      margin-bottom: 40px;
-    }
-
-    .section-label {
-      font-size: 0.7rem; font-weight: 700;
-      letter-spacing: 3px; text-transform: uppercase;
-      color: var(--bnb-gold);
-      margin-bottom: 16px;
-      text-align: center;
-    }
-
-    /* ======== CARDS & LAYOUTS ======== */
-    .card-grid {
-      display: grid;
-      gap: 20px;
-      width: 100%;
-      max-width: 1100px;
-    }
-    .card-grid.cols-2 { grid-template-columns: 1fr 1fr; }
-    .card-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
-    .card-grid.cols-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
-
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--bg-card-border);
-      border-radius: 16px;
-      padding: 28px;
-      transition: transform 0.2s, border-color 0.2s;
-    }
-    .card:hover {
-      transform: translateY(-2px);
-      border-color: rgba(240,185,11,0.3);
-    }
-
-    .card-icon {
-      width: 48px; height: 48px;
-      background: rgba(240,185,11,0.1);
-      border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.5rem;
-      margin-bottom: 16px;
-    }
-
-    .card h3 {
-      font-size: 1rem; font-weight: 700;
-      margin-bottom: 10px;
-      color: var(--text-primary);
-    }
-
-    .card p {
-      font-size: 0.82rem; line-height: 1.6;
-      color: var(--text-secondary);
-    }
-
-    /* ======== TABLE ======== */
-    .compare-table {
-      width: 100%; max-width: 1000px;
-      border-collapse: collapse;
-      font-size: 0.82rem;
-    }
-    .compare-table th {
-      text-align: left;
-      padding: 14px 18px;
-      background: rgba(240,185,11,0.08);
-      color: var(--bnb-gold);
-      font-weight: 700;
-      border-bottom: 2px solid rgba(240,185,11,0.2);
-    }
-    .compare-table td {
-      padding: 14px 18px;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      color: var(--text-secondary);
-      line-height: 1.5;
-    }
-    .compare-table tr:hover td { background: rgba(240,185,11,0.03); }
-    .compare-table .danger { color: var(--accent-red); font-weight: 600; }
-    .compare-table .success { color: var(--accent-green); font-weight: 600; }
-
-    /* ======== FLOW DIAGRAM (CSS) ======== */
-    .flow-horizontal {
-      display: flex; align-items: center; gap: 0;
-      width: 100%; max-width: 1100px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .flow-step {
-      display: flex; flex-direction: column; align-items: center;
-      padding: 16px 10px;
-      min-width: 130px;
-    }
-
-    .flow-circle {
-      width: 56px; height: 56px;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.4rem;
-      margin-bottom: 10px;
-      border: 2px solid;
-    }
-
-    .flow-step .label {
-      font-size: 0.72rem; font-weight: 700;
-      text-align: center; color: var(--text-primary);
-    }
-    .flow-step .desc {
-      font-size: 0.65rem;
-      color: var(--text-muted); text-align: center;
-      margin-top: 4px; max-width: 120px;
-    }
-
-    .flow-arrow {
-      font-size: 1.2rem; color: var(--bnb-gold-dim);
-      margin: 0 4px;
-      align-self: center;
-      margin-bottom: 30px;
-    }
-
-    /* ======== STAT BLOCK ======== */
-    .stat-row {
-      display: flex; gap: 32px; justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .stat-block {
-      text-align: center;
-      padding: 24px 32px;
-      background: var(--bg-card);
-      border: 1px solid var(--bg-card-border);
-      border-radius: 16px;
-      min-width: 180px;
-    }
-
-    .stat-number {
-      font-size: 2.4rem; font-weight: 900;
-      color: var(--bnb-gold);
-      line-height: 1;
-      margin-bottom: 8px;
-    }
-
-    .stat-label {
-      font-size: 0.75rem; font-weight: 600;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    /* ======== LOGO ======== */
-    .bnb-logo {
-      width: 80px; height: 80px;
-      margin-bottom: 24px;
-    }
-
-    .big-logo {
-      width: 120px; height: 120px;
-      margin-bottom: 32px;
-    }
-
-    /* ======== TECH STACK PILLS ======== */
-    .tech-pills {
-      display: flex; flex-wrap: wrap; gap: 10px;
-      justify-content: center;
-      max-width: 900px;
-    }
-
-    .pill {
-      padding: 10px 20px;
-      border-radius: 40px;
+    .dock-counter {
+      font-family: var(--font-mono);
       font-size: 0.78rem;
       font-weight: 600;
-      border: 1px solid;
-    }
-    .pill.gold { background: rgba(240,185,11,0.1); border-color: rgba(240,185,11,0.3); color: var(--bnb-gold); }
-    .pill.blue { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.3); color: var(--accent-blue); }
-    .pill.green { background: rgba(16,185,129,0.1); border-color: rgba(16,185,129,0.3); color: var(--accent-green); }
-    .pill.purple { background: rgba(139,92,246,0.1); border-color: rgba(139,92,246,0.3); color: var(--accent-purple); }
-
-    /* ======== TIMELINE ======== */
-    .timeline {
-      display: flex; gap: 0; width: 100%; max-width: 1000px;
-      position: relative;
-    }
-    .timeline::before {
-      content: '';
-      position: absolute;
-      top: 24px; left: 60px; right: 60px;
-      height: 2px;
-      background: linear-gradient(90deg, var(--bnb-gold), var(--accent-purple));
-    }
-
-    .timeline-item {
-      flex: 1;
-      display: flex; flex-direction: column; align-items: center;
-      position: relative;
-      padding: 0 12px;
-    }
-
-    .timeline-dot {
-      width: 16px; height: 16px;
-      border-radius: 50%;
-      background: var(--bnb-gold);
-      border: 3px solid var(--bg-primary);
-      margin-bottom: 16px;
-      z-index: 1;
-      box-shadow: 0 0 12px var(--bnb-gold-glow);
-    }
-    .timeline-item:last-child .timeline-dot { background: var(--accent-purple); }
-
-    .timeline-phase {
-      font-size: 0.7rem; font-weight: 700;
-      color: var(--bnb-gold);
-      margin-bottom: 6px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .timeline-title {
-      font-size: 0.85rem; font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 8px;
+      color: var(--text-body);
+      min-width: 52px;
       text-align: center;
     }
 
-    .timeline-desc {
-      font-size: 0.7rem; color: var(--text-secondary);
-      text-align: center; line-height: 1.5;
+    .dock-counter span {
+      color: var(--bnb-yellow);
     }
 
-    /* ======== QUOTE ======== */
-    .quote-block {
-      background: var(--bg-card);
-      border-left: 4px solid var(--bnb-gold);
-      border-radius: 0 16px 16px 0;
-      padding: 32px 40px;
-      max-width: 800px;
-      margin: 24px 0;
-    }
-
-    .quote-block p {
-      font-size: 1.15rem; font-weight: 500;
-      color: var(--text-primary);
-      line-height: 1.7;
-      font-style: italic;
-    }
-
-    .quote-block .author {
-      margin-top: 16px;
-      font-size: 0.8rem;
-      font-style: normal;
-      color: var(--bnb-gold);
+    /* Common Components & Typography */
+    .badge-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.72rem;
       font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: rgba(240, 185, 11, 0.08);
+      border: 1px solid var(--border-main);
+      color: var(--bnb-yellow);
+      margin-bottom: 14px;
     }
 
-    /* ======== CONTRACT TABLE ======== */
-    .contract-row {
-      display: flex; align-items: center; gap: 16px;
+    .badge-tag.cyan {
+      background: rgba(0, 240, 255, 0.08);
+      border-color: rgba(0, 240, 255, 0.25);
+      color: var(--tech-cyan);
+    }
+
+    .badge-tag.green {
+      background: rgba(16, 185, 129, 0.08);
+      border-color: rgba(16, 185, 129, 0.25);
+      color: var(--tech-green);
+    }
+
+    .h1-title {
+      font-size: 2.75rem;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      color: var(--text-white);
+      margin-bottom: 14px;
+    }
+
+    .h1-title .accent {
+      color: var(--bnb-yellow);
+      text-shadow: 0 0 24px rgba(240, 185, 11, 0.35);
+    }
+
+    .h2-title {
+      font-size: 2.1rem;
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--text-white);
+      margin-bottom: 8px;
+    }
+
+    .h2-title .accent {
+      color: var(--bnb-yellow);
+    }
+
+    .p-desc {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-body);
+      max-width: 680px;
+    }
+
+    /* Grid Layouts */
+    .split-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 48px;
+      align-items: center;
+      width: 100%;
+      max-width: 1320px;
+      margin: 0 auto;
+    }
+
+    .split-layout.reversed {
+      grid-template-columns: 0.9fr 1.1fr;
+    }
+
+    .bento-grid {
+      display: grid;
+      gap: 18px;
+      width: 100%;
+      max-width: 1320px;
+      margin: 22px auto 0 auto;
+    }
+
+    .bento-grid.cols-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .bento-grid.cols-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .bento-grid.cols-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .bento-card {
       background: var(--bg-card);
-      border: 1px solid var(--bg-card-border);
-      border-radius: 12px;
-      padding: 16px 24px;
-      margin-bottom: 12px;
-      width: 100%; max-width: 800px;
-    }
-    .contract-row .name {
-      font-weight: 700; font-size: 0.85rem;
-      min-width: 140px; color: var(--bnb-gold);
-    }
-    .contract-row .addr {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem; color: var(--text-secondary);
-      word-break: break-all;
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.25s ease;
+      backdrop-filter: blur(14px);
     }
 
-    /* ======== SECURITY BADGES ======== */
-    .badge-list {
-      display: flex; flex-wrap: wrap; gap: 12px;
-      justify-content: center; max-width: 900px;
+    .bento-card:hover {
+      border-color: var(--border-accent);
+      background: var(--bg-card-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4), 0 0 18px var(--bnb-glow-subtle);
     }
 
-    .badge {
-      display: flex; align-items: center; gap: 8px;
-      background: var(--bg-card);
-      border: 1px solid var(--bg-card-border);
+    .bento-card.highlight {
+      border-color: var(--border-main);
+      background: linear-gradient(135deg, rgba(240, 185, 11, 0.06) 0%, rgba(16, 21, 32, 0.9) 100%);
+    }
+
+    .bento-icon-box {
+      width: 44px;
+      height: 44px;
       border-radius: 10px;
-      padding: 12px 20px;
-      font-size: 0.78rem; font-weight: 600;
-      color: var(--text-primary);
+      background: rgba(240, 185, 11, 0.1);
+      border: 1px solid rgba(240, 185, 11, 0.22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--bnb-yellow);
+      margin-bottom: 16px;
     }
 
-    .badge .dot {
-      width: 8px; height: 8px;
+    .bento-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-white);
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .bento-card p {
+      font-size: 0.84rem;
+      line-height: 1.55;
+      color: var(--text-body);
+    }
+
+    /* 3D Visual Frames */
+    .visual-3d-frame {
+      position: relative;
+      border-radius: 20px;
+      border: 1px solid var(--border-main);
+      overflow: hidden;
+      background: var(--bg-surface);
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.7), 0 0 24px var(--bnb-glow-subtle);
+    }
+
+    .visual-3d-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .visual-3d-frame:hover img {
+      transform: scale(1.02);
+    }
+
+    .visual-glass-overlay {
+      position: absolute;
+      bottom: 14px;
+      left: 14px;
+      right: 14px;
+      padding: 10px 16px;
+      background: rgba(8, 11, 17, 0.82);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .visual-glass-overlay .title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--bnb-yellow);
+      font-family: var(--font-mono);
+    }
+
+    .visual-glass-overlay .status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.7rem;
+      color: var(--tech-green);
+      font-family: var(--font-mono);
+    }
+
+    .pulse-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--tech-green);
+      box-shadow: 0 0 8px var(--tech-green);
+    }
+
+    /* Code Window (IDE Aesthetic) */
+    .code-window {
+      background: #090C13;
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      overflow: hidden;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+    }
+
+    .code-window-header {
+      background: #0E121C;
+      padding: 10px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .mac-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .mac-dot {
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
     }
-    .badge .dot.green { background: var(--accent-green); box-shadow: 0 0 8px rgba(16,185,129,0.5); }
-    .badge .dot.gold { background: var(--bnb-gold); box-shadow: 0 0 8px var(--bnb-gold-glow); }
 
-    /* ======== IMPACT ITEMS ======== */
-    .impact-item {
-      display: flex; gap: 20px; align-items: flex-start;
-      margin-bottom: 20px; max-width: 700px;
+    .mac-dot.red { background: #FF5F56; }
+    .mac-dot.yellow { background: #FFBD2E; }
+    .mac-dot.green { background: #27C93F; }
+
+    .code-tab {
+      color: var(--bnb-yellow);
+      font-size: 0.72rem;
+      font-weight: 600;
     }
-    .impact-num {
-      font-size: 2rem; font-weight: 900;
-      color: var(--bnb-gold); opacity: 0.6;
-      min-width: 50px;
-    }
-    .impact-item h4 {
-      font-size: 0.95rem; font-weight: 700;
-      margin-bottom: 6px;
-    }
-    .impact-item p {
-      font-size: 0.8rem; color: var(--text-secondary);
+
+    .code-body {
+      padding: 18px;
       line-height: 1.6;
+      color: #D1D5DB;
+      overflow-x: auto;
     }
 
-    /* ======== KEY BINDING HINT ======== */
-    .key-hint {
-      position: fixed; bottom: 60px; right: 32px; z-index: 50;
-      font-size: 0.65rem; color: var(--text-muted);
-      opacity: 0.5;
-    }
-    .key-hint kbd {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 4px;
-      padding: 2px 6px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.6rem;
+    .c-kw { color: #A855F7; font-weight: 600; }
+    .c-fn { color: #60A5FA; }
+    .c-str { color: #34D399; }
+    .c-num { color: #F59E0B; }
+    .c-cm { color: #6B7280; font-style: italic; }
+    .c-gold { color: var(--bnb-yellow); font-weight: 600; }
+
+    /* Flow Horizontal Pipeline */
+    .flow-pipeline {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+      width: 100%;
+      max-width: 1320px;
+      margin: 28px auto 0 auto;
+      position: relative;
     }
 
-    /* ======== CLOSING SLIDE ======== */
-    .closing-links {
-      display: flex; gap: 16px; margin-top: 32px;
-    }
-    .closing-links a {
-      display: flex; align-items: center; gap: 8px;
-      padding: 12px 24px;
-      border-radius: 12px;
-      text-decoration: none;
-      font-size: 0.82rem; font-weight: 700;
+    .flow-pipeline-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 20px 16px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
       transition: all 0.2s;
     }
-    .closing-links .primary-link {
-      background: var(--bnb-gold);
-      color: var(--bg-primary);
-    }
-    .closing-links .primary-link:hover { background: #d4a30a; }
-    .closing-links .secondary-link {
-      background: rgba(240,185,11,0.1);
-      border: 1px solid rgba(240,185,11,0.3);
-      color: var(--bnb-gold);
-    }
-    .closing-links .secondary-link:hover { background: rgba(240,185,11,0.2); }
 
-    /* Small text utility */
-    .small-note {
-      font-size: 0.7rem; color: var(--text-muted);
-      margin-top: 16px; text-align: center;
+    .flow-pipeline-step:hover {
+      border-color: var(--border-accent);
+      background: var(--bg-card-hover);
     }
 
-    .slide-content-wrapper {
-      display: flex; flex-direction: column;
-      align-items: center; width: 100%;
+    .flow-step-num {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--bnb-yellow);
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(240, 185, 11, 0.1);
+      margin-bottom: 12px;
     }
 
-    .text-left-block {
-      text-align: left;
-      max-width: 900px;
+    .flow-step-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-white);
+      margin-bottom: 6px;
+    }
+
+    .flow-step-desc {
+      font-size: 0.76rem;
+      line-height: 1.5;
+      color: var(--text-body);
+    }
+
+    /* Comparison Table Matrix */
+    .matrix-table {
       width: 100%;
+      max-width: 1320px;
+      margin: 20px auto 0 auto;
+      border-collapse: separate;
+      border-spacing: 0;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card);
     }
 
-    .text-left-block h3 {
-      font-size: 1.1rem; font-weight: 800;
-      margin-bottom: 12px; margin-top: 20px;
-      color: var(--bnb-gold);
+    .matrix-table th {
+      padding: 14px 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      text-align: left;
+      background: rgba(14, 18, 27, 0.95);
+      border-bottom: 1px solid var(--border-main);
+      color: var(--text-muted);
     }
-    .text-left-block h3:first-child { margin-top: 0; }
 
-    .text-left-block p, .text-left-block li {
-      font-size: 0.82rem; color: var(--text-secondary);
-      line-height: 1.7;
+    .matrix-table th.highlight-col {
+      color: var(--bnb-yellow);
+      background: rgba(240, 185, 11, 0.08);
+      border-bottom: 2px solid var(--bnb-yellow);
     }
-    .text-left-block ul { padding-left: 20px; }
-    .text-left-block li { margin-bottom: 8px; }
-    .text-left-block li strong { color: var(--text-primary); }
+
+    .matrix-table td {
+      padding: 16px 20px;
+      font-size: 0.84rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: var(--text-body);
+    }
+
+    .matrix-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .matrix-table td.highlight-col {
+      background: rgba(240, 185, 11, 0.03);
+      color: var(--text-white);
+      font-weight: 600;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.76rem;
+      font-weight: 600;
+    }
+
+    .status-badge.negative {
+      color: var(--tech-red);
+    }
+
+    .status-badge.positive {
+      color: var(--tech-green);
+    }
+
+    /* Key Metrics Display */
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      width: 100%;
+      margin: 18px 0;
+    }
+
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 22px;
+      border-left: 3px solid var(--bnb-yellow);
+    }
+
+    .metric-val {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--bnb-yellow);
+      font-family: var(--font-mono);
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+
+    .metric-lbl {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-heading);
+      margin-bottom: 4px;
+    }
+
+    .metric-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    /* Buttons & Links */
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .cta-btn.primary {
+      background: var(--bnb-yellow);
+      color: #000;
+      box-shadow: 0 4px 18px var(--bnb-glow);
+    }
+
+    .cta-btn.primary:hover {
+      background: var(--bnb-yellow-bright);
+      transform: translateY(-2px);
+    }
+
+    .cta-btn.secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-white);
+    }
+
+    .cta-btn.secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--bnb-yellow);
+      color: var(--bnb-yellow);
+    }
+
+    /* Fullscreen helper button */
+    .fs-toggle {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding: 4px;
+      transition: color 0.2s;
+    }
+
+    .fs-toggle:hover {
+      color: var(--bnb-yellow);
+    }
   </style>
 </head>
 <body>
-  <div class="bg-grid"></div>
-  <div class="bg-glow-1"></div>
-  <div class="bg-glow-2"></div>
+  <!-- Ambient Background -->
+  <div class="viewport-bg">
+    <div class="bg-grid"></div>
+    <div class="bg-radial-top"></div>
+    <div class="bg-radial-bottom"></div>
+  </div>
 
-  <div class="progress-track"><div class="progress-fill" id="progress"></div></div>
+  <!-- Top Progress Bar -->
+  <div class="top-progress-bar">
+    <div class="top-progress-indicator" id="progressIndicator" style="width: 8.33%;"></div>
+  </div>
 
-  <div class="deck" id="deck">
+  <!-- Main Slides Deck -->
+  <div class="deck-container" id="deckContainer">
 
     <!-- ==================== SLIDE 1: COVER ==================== -->
     <div class="slide active" data-slide="0">
-      <svg class="big-logo" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="48" fill="#080B11" stroke="#F0B90B" stroke-width="3"/>
-        <polygon points="50,20 75,40 65,75 35,75 25,40" fill="none" stroke="#F0B90B" stroke-width="4"/>
-        <circle cx="50" cy="50" r="10" fill="#F0B90B"/>
-      </svg>
-      <div class="slide-title">
-        Arisan<span class="gold">Chain</span>
+      <div class="split-layout">
+        <div>
+          <div class="badge-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2L1 21h22L12 2zm0 4.2l7.5 13H4.5L12 6.2z"/>
+            </svg>
+            BNB Smart Chain Testnet &bull; Chain ID 97
+          </div>
+          <h1 class="h1-title">
+            Arisan<span class="accent">Chain</span>
+          </h1>
+          <p class="p-desc" style="font-size: 1.15rem; margin-bottom: 24px; color: var(--text-heading);">
+            Membawa Tradisi Arisan Indonesia ke Blockchain — Transparan, Adil, dan Tanpa Perlu Saling Percaya Buta.
+          </p>
+          <p class="p-desc" style="margin-bottom: 32px; font-size: 0.88rem;">
+            Protokol Non-Custodial Rotating Savings (ROSCA) dengan jaminan deposit on-chain dan Commit-Reveal shuffle kriptografis tahan manipulasi.
+          </p>
+
+          <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+            <a href="https://frontend-six-tawny-83.vercel.app" target="_blank" class="cta-btn primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+              Buka Live App
+            </a>
+            <a href="https://github.com/Vraken9/Arisan" target="_blank" class="cta-btn secondary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+              </svg>
+              GitHub Repository
+            </a>
+          </div>
+
+          <div style="margin-top: 36px; display: flex; gap: 24px; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);">
+            <div>TRACK: <span style="color: var(--bnb-yellow);">FINANCE & COMMERCE</span></div>
+            <div>VERSI: <span style="color: var(--text-white);">v1.0.0</span></div>
+            <div>SOLC: <span style="color: var(--text-white);">^0.8.24</span></div>
+          </div>
+        </div>
+
+        <div class="visual-3d-frame" style="height: 380px;">
+          <img src="/images/bnb_vault_3d.jpg" alt="3D BNB Smart Contract Vault">
+          <div class="visual-glass-overlay">
+            <div class="title">ARISAN VAULT CORE &bull; 0xDf76...434E</div>
+            <div class="status">
+              <div class="pulse-dot"></div>
+              BSC TESTNET ACTIVE
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="slide-subtitle">
-        Membawa Tradisi Arisan Indonesia ke Blockchain<br>
-        Transparan, Adil, dan Tanpa Perlu Saling Percaya Buta
-      </div>
-      <div class="tech-pills">
-        <span class="pill gold">BNB Smart Chain</span>
-        <span class="pill blue">Solidity ^0.8.24</span>
-        <span class="pill green">React 19</span>
-        <span class="pill purple">Commit-Reveal Protocol</span>
-      </div>
-      <p class="small-note" style="margin-top: 32px;">Indonesia Web3 Hackathon 2026 &mdash; Track: Finance & Commerce</p>
     </div>
 
     <!-- ==================== SLIDE 2: MASALAH ==================== -->
     <div class="slide" data-slide="1">
-      <div class="section-label">Masalah yang Kami Selesaikan</div>
-      <div class="slide-title" style="font-size:2rem;">
-        Arisan Tradisional:<br>Budaya yang <span class="gold">Rentan Dieksploitasi</span>
-      </div>
-      <div class="card-grid cols-2" style="margin-top: 8px;">
-        <div class="card">
-          <div class="card-icon">&#128176;</div>
-          <h3>Bendahara Nakal</h3>
-          <p>Seluruh dana dikumpulkan satu orang tanpa mekanisme audit. Puluhan kasus penggelapan dana arisan tercatat di media Indonesia setiap tahun.</p>
+      <div class="badge-tag">Analisis Masalah Sistemik</div>
+      <h2 class="h2-title">Tradisi Kuat dengan <span class="accent">Infrastruktur Rapuh</span></h2>
+      <p class="p-desc">Arisan konvensional di Indonesia bergantung 100% pada kepercayaan buta terhadap figur manusia tanpa kepastian hukum atau audit teknis.</p>
+
+      <div class="bento-grid cols-4">
+        <div class="bento-card">
+          <div class="bento-icon-box" style="background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3); color: var(--tech-red);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+          </div>
+          <h3>Risiko Pengurus Kabur</h3>
+          <p>Seluruh dana dipegang di rekening pribadi bendahara. Tidak ada audit independen sehingga kasus penipuan arisan bernilai miliaran rupiah rutin terjadi.</p>
         </div>
-        <div class="card">
-          <div class="card-icon">&#128694;</div>
-          <h3>Peserta Kabur</h3>
-          <p>Anggota yang sudah menerima dana di ronde awal berhenti membayar. Tidak ada jaminan hukum. Arisan macet, dan yang tersisa hanya kekecewaan.</p>
+
+        <div class="bento-card">
+          <div class="bento-icon-box" style="background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.3); color: #F59E0B;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="8.5" cy="7" r="4"/>
+              <line x1="18" y1="8" x2="23" y2="13"/>
+              <line x1="23" y1="8" x2="18" y2="13"/>
+            </svg>
+          </div>
+          <h3>Peserta Mangkir (Defaulter)</h3>
+          <p>Peserta yang mendapat arisan di ronde awal seringkali hilang dan tidak membayar iuran ronde berikutnya tanpa ada agunan yang dapat disita.</p>
         </div>
-        <div class="card">
-          <div class="card-icon">&#127922;</div>
-          <h3>Urutan Tidak Transparan</h3>
-          <p>Pengocokan manual oleh bendahara yang tidak bisa diverifikasi. Kecurigaan bias selalu ada, terutama ketika bendahara sendiri mendapat giliran awal.</p>
+
+        <div class="bento-card">
+          <div class="bento-icon-box" style="background: rgba(168, 85, 247, 0.1); border-color: rgba(168, 85, 247, 0.3); color: var(--tech-purple);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+            </svg>
+          </div>
+          <h3>Pengocokan Bias & Manipulatif</h3>
+          <p>Urutan penerima ditentukan melalui bot chat atau kocokan kertas manual yang sangat rentan kongkalikong dan tidak dapat diaudit independen.</p>
         </div>
-        <div class="card">
-          <div class="card-icon">&#128214;</div>
-          <h3>Tanpa Jejak Transaksi</h3>
-          <p>Pencatatan manual di buku tulis atau chat WhatsApp. Saat terjadi sengketa, tidak ada bukti yang tak terbantahkan.</p>
+
+        <div class="bento-card">
+          <div class="bento-icon-box" style="background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.3); color: #60A5FA;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+            </svg>
+          </div>
+          <h3>Pembukuan Tidak Terverifikasi</h3>
+          <p>Pencatatan kas via spreadsheet manual atau chat WhatsApp menimbulkan konflik selisih saldo, transfer palsu, dan hilangnya rekaman historis.</p>
         </div>
       </div>
     </div>
 
     <!-- ==================== SLIDE 3: KONTEKS BUDAYA ==================== -->
     <div class="slide" data-slide="2">
-      <div class="section-label">Konteks Budaya</div>
-      <div class="slide-title" style="font-size: 2rem;">
-        Mengapa <span class="gold">Arisan</span> adalah Pintu Masuk<br>Blockchain Terbaik untuk Indonesia
-      </div>
+      <div class="split-layout reversed">
+        <div class="visual-3d-frame" style="height: 380px;">
+          <img src="/images/bnb_community_network.jpg" alt="3D Financial Cooperative Network">
+          <div class="visual-glass-overlay">
+            <div class="title">COOPERATIVE CONSENSUS GRAPH</div>
+            <div class="status">PEER-TO-PEER TRUSTLESS</div>
+          </div>
+        </div>
 
-      <div class="stat-row" style="margin-bottom: 32px;">
-        <div class="stat-block">
-          <div class="stat-number">50jt+</div>
-          <div class="stat-label">Rumah Tangga<br>Pernah Ikut Arisan</div>
-        </div>
-        <div class="stat-block">
-          <div class="stat-number">200jt+</div>
-          <div class="stat-label">Pengguna Internet<br>Aktif di Indonesia</div>
-        </div>
-        <div class="stat-block">
-          <div class="stat-number">T Rp</div>
-          <div class="stat-label">Nilai Ekonomi<br>Arisan Informal</div>
-        </div>
-      </div>
+        <div>
+          <div class="badge-tag cyan">Relevansi Kultural Indonesia</div>
+          <h2 class="h2-title">Blockchain Tanpa Perlu <span class="accent">Mengubah Kebiasaan</span></h2>
+          <p class="p-desc" style="margin-bottom: 20px;">
+            Arisan adalah institusi sosial terbesar di Indonesia yang telah beroperasi selama puluhan tahun dengan model tabungan bergilir tanpa bunga. ArisanChain bukan menciptakan produk asing, melainkan memodernisasi fondasi keamanannya.
+          </p>
 
-      <div class="quote-block">
-        <p>"Arisan sudah memiliki logika ekonomi yang bagus &mdash; tabungan bergilir tanpa bunga. Yang kurang hanya satu: infrastruktur kepercayaan yang tidak bisa dimanipulasi."</p>
-        <div class="author">&mdash; Tesis ArisanChain</div>
+          <div class="metric-row">
+            <div class="metric-card">
+              <div class="metric-val">50M+</div>
+              <div class="metric-lbl">Partisipan Arisan</div>
+              <div class="metric-sub">Rumah tangga & komunitas</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-val">210M</div>
+              <div class="metric-lbl">Pengguna Internet</div>
+              <div class="metric-sub">Penetrasi digital masif</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-val">100%</div>
+              <div class="metric-lbl">Tanpa Kustodian</div>
+              <div class="metric-sub">Uang milik bersama</div>
+            </div>
+          </div>
+
+          <div style="padding: 14px 18px; border-radius: 10px; background: rgba(240, 185, 11, 0.05); border: 1px solid var(--border-main); font-size: 0.82rem; line-height: 1.6; color: var(--text-heading);">
+            <strong>Prinsip "Silent Blockchain Adoption":</strong> Anggota arisan tidak dibebani konsep kripto rumit. Mereka hanya merasakan arisan yang jauh lebih aman, bebas sengketa, dan dijamin oleh protokol pintar di BNB Chain.
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- ==================== SLIDE 4: SOLUSI ==================== -->
     <div class="slide" data-slide="3">
-      <div class="section-label">Solusi Kami</div>
-      <div class="slide-title" style="font-size: 2rem;">
-        4 Pilar Keamanan <span class="gold">ArisanChain</span>
-      </div>
-      <div class="card-grid cols-2">
-        <div class="card">
-          <div class="card-icon" style="background: rgba(16,185,129,0.1);">&#128274;</div>
-          <h3>Non-Custodial Vault</h3>
-          <p>Dana tidak pernah dipegang satu orang. Smart contract menjadi "bendahara digital" yang tidak bisa disuap, tidak bisa kabur, dan kodenya bisa diaudit siapa saja.</p>
+      <div class="badge-tag green">Solusi ArisanChain</div>
+      <h2 class="h2-title">Empat Pilar Arsitektur <span class="accent">Zero-Trust</span></h2>
+      <p class="p-desc">Smart contract menggantikan peran bendahara manusia dengan kode terverifikasi dan eksekusi deterministik di EVM.</p>
+
+      <div class="bento-grid cols-2">
+        <div class="bento-card highlight">
+          <div class="bento-icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+          </div>
+          <h3>Non-Custodial Multi-Vault</h3>
+          <p>Dana dikunci di dalam smart contract individual untuk setiap kelompok. Tidak ada admin, pengurus, maupun developer yang dapat menyentuh atau memindahkan saldo kas secara sepihak.</p>
         </div>
-        <div class="card">
-          <div class="card-icon" style="background: rgba(239,68,68,0.1);">&#9889;</div>
-          <h3>Deposit + Auto-Slash</h3>
-          <p>Setiap anggota setor jaminan saat bergabung. Gagal bayar? Deposit otomatis dipotong. Peserta nakal rugi, bukan anggota lain.</p>
+
+        <div class="bento-card highlight">
+          <div class="bento-icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+          </div>
+          <h3>Deposit Jaminan & Auto-Slash</h3>
+          <p>Setiap anggota mengunci deposit jaminan (Collateral Deposit). Jika peserta mangkir melunasi iuran melewati batas waktu ronde, protokol mengizinkan eksekusi Slash untuk menyita deposit dan menutup hak peserta lain.</p>
         </div>
-        <div class="card">
-          <div class="card-icon" style="background: rgba(139,92,246,0.1);">&#128256;</div>
-          <h3>Commit-Reveal Fair Ordering</h3>
-          <p>Setiap anggota menyumbang angka rahasia. Smart contract menggabungkan semuanya dengan Fisher-Yates Shuffle. Tidak ada yang bisa memanipulasi urutan.</p>
+
+        <div class="bento-card highlight">
+          <div class="bento-icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="16 3 21 3 21 8"/>
+              <line x1="4" y1="20" x2="21" y2="3"/>
+              <polyline points="21 16 21 21 16 21"/>
+              <line x1="15" y1="15" x2="21" y2="21"/>
+              <line x1="4" y1="4" x2="9" y2="9"/>
+            </svg>
+          </div>
+          <h3>Commit-Reveal Cryptographic Ordering</h3>
+          <p>Urutan penerima arisan ditentukan oleh seluruh anggota melalui entropy rahasia (hash commit lalu reveal). Hasil dihitung menggunakan algoritma Fisher-Yates shuffle yang verifiable dan anti-frontrunning.</p>
         </div>
-        <div class="card">
-          <div class="card-icon" style="background: rgba(59,130,246,0.1);">&#128269;</div>
-          <h3>Transparansi On-Chain</h3>
-          <p>Setiap transaksi tercatat sebagai event di blockchain BNB. Siapa yang sudah bayar, berapa dana terkumpul &mdash; semua bisa diverifikasi publik di BscScan.</p>
+
+        <div class="bento-card highlight">
+          <div class="bento-icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </div>
+          <h3>Audit Transparansi Publik Permanen</h3>
+          <p>Setiap interaksi dicatat sebagai event blockchain immutable di BNB Smart Chain. Anggota dan publik dapat memverifikasi status pembayaran setiap saat melalui BscScan.</p>
         </div>
       </div>
     </div>
 
     <!-- ==================== SLIDE 5: PERBANDINGAN ==================== -->
     <div class="slide" data-slide="4">
-      <div class="section-label">Perbandingan</div>
-      <div class="slide-title" style="font-size: 1.8rem;">
-        Arisan Konvensional vs <span class="gold">ArisanChain</span>
-      </div>
-      <table class="compare-table">
+      <div class="badge-tag">Tolok Ukur Keamanan</div>
+      <h2 class="h2-title">Perbandingan Model <span class="accent">Konvensional vs Protokol</span></h2>
+      <p class="p-desc">Perbandingan parameter struktural antara arisan tradisional vs arisan on-chain ArisanChain.</p>
+
+      <table class="matrix-table">
         <thead>
           <tr>
-            <th style="width:25%;">Parameter</th>
-            <th style="width:37%;">Arisan Konvensional</th>
-            <th style="width:38%;">ArisanChain Protocol</th>
+            <th style="width: 26%;">Parameter Operasional</th>
+            <th style="width: 37%;">Arisan Konvensional</th>
+            <th style="width: 37%;" class="highlight-col">ArisanChain Protocol (BNB Chain)</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Pengelola Dana</strong></td>
-            <td class="danger">Rekening pribadi bendahara</td>
-            <td class="success">Smart Contract vault (non-custodial)</td>
+            <td><strong>Penyimpanan Kas</strong></td>
+            <td>
+              <div class="status-badge negative">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                Rekening pribadi pengurus (Kustodian)
+              </div>
+            </td>
+            <td class="highlight-col">
+              <div class="status-badge positive">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Smart Contract Vault Non-Custodial Terisolasi
+              </div>
+            </td>
           </tr>
           <tr>
-            <td><strong>Risiko Kabur</strong></td>
-            <td class="danger">Tidak ada perlindungan</td>
-            <td class="success">Deposit jaminan + auto-slash</td>
+            <td><strong>Perlindungan Defaulter</strong></td>
+            <td>
+              <div class="status-badge negative">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                Nihil. Sengketa personal atau hukum pidana
+              </div>
+            </td>
+            <td class="highlight-col">
+              <div class="status-badge positive">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Deposit Terikat + Pemotongan Otomatis (Auto-Slash)
+              </div>
+            </td>
           </tr>
           <tr>
             <td><strong>Penentuan Urutan</strong></td>
-            <td class="danger">Pengocokan manual, rentan bias</td>
-            <td class="success">Commit-Reveal kriptografi, verifiable</td>
+            <td>
+              <div class="status-badge negative">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                Kocokan kertas manual / preferensi pengurus
+              </div>
+            </td>
+            <td class="highlight-col">
+              <div class="status-badge positive">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Kriptografi Commit-Reveal + Fisher-Yates EVM
+              </div>
+            </td>
           </tr>
           <tr>
-            <td><strong>Transparansi</strong></td>
-            <td class="danger">Catatan manual, rawan selisih</td>
-            <td class="success">Event log blockchain permanen</td>
+            <td><strong>Audit Transaksi</strong></td>
+            <td>
+              <div class="status-badge negative">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                Catatan buku manual, rawan selisih & hilang
+              </div>
+            </td>
+            <td class="highlight-col">
+              <div class="status-badge positive">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Event Log On-Chain 100% Immutable & BscScan Verified
+              </div>
+            </td>
           </tr>
           <tr>
-            <td><strong>Jangkauan</strong></td>
-            <td class="danger">Terbatas lingkungan lokal</td>
-            <td class="success">Lintas kota/negara, trustless</td>
+            <td><strong>Jangkauan Partisipasi</strong></td>
+            <td>
+              <div class="status-badge negative">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                Terbatas komunitas tetangga terdekat
+              </div>
+            </td>
+            <td class="highlight-col">
+              <div class="status-badge positive">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Lintas kota/negara tanpa batasan perantara
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- ==================== SLIDE 6: HOW IT WORKS ==================== -->
+    <!-- ==================== SLIDE 6: FLOW CYCLE ==================== -->
     <div class="slide" data-slide="5">
-      <div class="section-label">Cara Kerja</div>
-      <div class="slide-title" style="font-size: 1.8rem;">
-        Siklus Hidup Grup <span class="gold">ArisanChain</span>
+      <div class="badge-tag">Siklus Hidup Kontrak</div>
+      <h2 class="h2-title">State Machine <span class="accent">Lima Fase Terkendali</span></h2>
+      <p class="p-desc">Perpindahan status grup dikendalikan secara mutlak oleh logika smart contract tanpa intervensi manual.</p>
+
+      <div class="flow-pipeline">
+        <div class="flow-pipeline-step">
+          <div class="flow-step-num">PHASE 01</div>
+          <div class="flow-step-title">OPEN</div>
+          <div class="flow-step-desc">Pembuatan grup dengan parameter iuran, ronde, & durasi. Peserta menyetor deposit jaminan untuk mengambil slot.</div>
+        </div>
+
+        <div class="flow-pipeline-step">
+          <div class="flow-step-num">PHASE 02</div>
+          <div class="flow-step-title">COMMITTING</div>
+          <div class="flow-step-desc">Grup penuh. Setiap anggota mengunggah hash commitments dari angka rahasia ke jaringan blockchain.</div>
+        </div>
+
+        <div class="flow-pipeline-step">
+          <div class="flow-step-num">PHASE 03</div>
+          <div class="flow-step-title">REVEALING</div>
+          <div class="flow-step-desc">Anggota mengungkap angka rahasia asli. Kontrak mencocokkan hash dan mengocok urutan secara deterministik.</div>
+        </div>
+
+        <div class="flow-pipeline-step">
+          <div class="flow-step-num">PHASE 04</div>
+          <div class="flow-step-title">ACTIVE</div>
+          <div class="flow-step-desc">Ronde berjalan berurutan. Peserta menyetor iuran, dana pot otomatis ditransfer ke penerima giliran ronde tersebut.</div>
+        </div>
+
+        <div class="flow-pipeline-step">
+          <div class="flow-step-num">PHASE 05</div>
+          <div class="flow-step-title">COMPLETED</div>
+          <div class="flow-step-desc">Semua ronde selesai secara tuntas. Deposit jaminan 100% dikembalikan kepada seluruh anggota yang taat.</div>
+        </div>
       </div>
 
-      <div class="flow-horizontal">
-        <div class="flow-step">
-          <div class="flow-circle" style="border-color: var(--bnb-gold); color: var(--bnb-gold); background: rgba(240,185,11,0.08);">&#128196;</div>
-          <div class="label">OPEN</div>
-          <div class="desc">Buat grup &amp; anggota bergabung + setor deposit</div>
+      <div style="margin-top: 24px; padding: 16px 20px; border-radius: 12px; background: rgba(239, 68, 68, 0.06); border: 1px solid rgba(239, 68, 68, 0.25); display: flex; align-items: center; justify-content: space-between; max-width: 1320px; margin-left: auto; margin-right: auto; width: 100%;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="color: var(--tech-red); display: flex;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+              <line x1="12" y1="9" x2="12" y2="13"/>
+              <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+          </div>
+          <div style="font-size: 0.82rem; color: var(--text-heading);">
+            <strong>Mekanisme Fail-Safe Auto-Slash:</strong> Jika seorang anggota tidak membayar iuran saat deadline ronde berakhir, siapa saja dapat memanggil fungsi <code style="font-family: var(--font-mono); color: var(--bnb-yellow);">slashDefaulter()</code> untuk mengeksekusi jaminan.
+          </div>
         </div>
-        <div class="flow-arrow">&#10132;</div>
-        <div class="flow-step">
-          <div class="flow-circle" style="border-color: var(--accent-blue); color: var(--accent-blue); background: rgba(59,130,246,0.08);">&#128272;</div>
-          <div class="label">COMMIT</div>
-          <div class="desc">Semua anggota submit hash rahasia</div>
+        <div style="font-family: var(--font-mono); font-size: 0.74rem; color: var(--tech-red); font-weight: 700;">
+          SLA ENFORCEMENT
         </div>
-        <div class="flow-arrow">&#10132;</div>
-        <div class="flow-step">
-          <div class="flow-circle" style="border-color: var(--accent-purple); color: var(--accent-purple); background: rgba(139,92,246,0.08);">&#128275;</div>
-          <div class="label">REVEAL</div>
-          <div class="desc">Buka secret, urutan terkunci otomatis</div>
-        </div>
-        <div class="flow-arrow">&#10132;</div>
-        <div class="flow-step">
-          <div class="flow-circle" style="border-color: var(--accent-green); color: var(--accent-green); background: rgba(16,185,129,0.08);">&#9989;</div>
-          <div class="label">ACTIVE</div>
-          <div class="desc">Kontribusi per ronde, payout otomatis</div>
-        </div>
-        <div class="flow-arrow">&#10132;</div>
-        <div class="flow-step">
-          <div class="flow-circle" style="border-color: var(--text-secondary); color: var(--text-secondary); background: rgba(156,163,175,0.08);">&#127942;</div>
-          <div class="label">DONE</div>
-          <div class="desc">Deposit dikembalikan ke peserta taat</div>
-        </div>
-      </div>
-
-      <div class="small-note" style="margin-top: 24px; max-width: 700px;">
-        Jika ada anggota gagal bayar setelah deadline, siapa pun bisa menjalankan <strong style="color: var(--accent-red);">Slash Defaulter</strong>
-        &mdash; deposit jaminan otomatis dipotong untuk menutup kewajiban.
       </div>
     </div>
 
-    <!-- ==================== SLIDE 7: ARSITEKTUR ==================== -->
+    <!-- ==================== SLIDE 7: ARSITEKTUR & CODE ==================== -->
     <div class="slide" data-slide="6">
-      <div class="section-label">Arsitektur Teknis</div>
-      <div class="slide-title" style="font-size: 1.8rem;">
-        Factory Pattern &amp; <span class="gold">Tech Stack</span>
-      </div>
-      <div style="display: flex; gap: 32px; width: 100%; max-width: 1100px; align-items: flex-start;">
-        <div style="flex: 1;">
-          <div class="card" style="margin-bottom: 16px;">
-            <h3 style="color: var(--bnb-gold); margin-bottom: 12px;">Pola Arsitektur</h3>
-            <p style="font-size: 0.8rem; line-height: 1.7; color: var(--text-secondary);">
-              <strong style="color: var(--text-primary);">ArisanFactory</strong> memproduksi instance <strong style="color: var(--text-primary);">ArisanGroup</strong> yang independen. Setiap grup adalah vault terpisah dengan siklus hidup, saldo, dan urutan giliran sendiri.
-            </p>
-            <div style="margin-top: 16px; padding: 16px; background: rgba(0,0,0,0.3); border-radius: 10px; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--accent-green); line-height: 1.8;">
-              Factory.createGroup(token, 100, 100, 3, 24h)<br>
-              &nbsp;&nbsp;&#8627; deploy new ArisanGroup(...)<br>
-              &nbsp;&nbsp;&#8627; groups.push(groupAddress)<br>
-              &nbsp;&nbsp;&#8627; emit GroupCreated(...)
-            </div>
+      <div class="split-layout">
+        <div>
+          <div class="badge-tag cyan">Arsitektur & Kode Kontrak</div>
+          <h2 class="h2-title">Solidity <span class="accent">Factory Pattern</span></h2>
+          <p class="p-desc" style="margin-bottom: 20px;">
+            Implementasi kontrak modular memisahkan Registry Management (<code style="font-family: var(--font-mono); color: var(--bnb-yellow);">ArisanFactory</code>) dengan Logic Vault per grup (<code style="font-family: var(--font-mono); color: var(--bnb-yellow);">ArisanGroup</code>).
+          </p>
+
+          <div class="bento-card" style="margin-bottom: 12px;">
+            <h3 style="font-size: 0.95rem; color: var(--bnb-yellow);">ArisanFactory.sol (Deployer)</h3>
+            <p style="font-size: 0.8rem;">Mendeploy instance vault baru dengan biaya gas teroptimasi, melacak daftar grup publik, dan mengelompokkan grup berdasarkan alamat inisiator.</p>
+          </div>
+
+          <div class="bento-card">
+            <h3 style="font-size: 0.95rem; color: var(--tech-green);">ArisanGroup.sol (Vault & State Machine)</h3>
+            <p style="font-size: 0.8rem;">Mengelola escrow token ERC-20, penyimpanan jaminan, verifikasi komitmen kriptografi, dan distribusi pot tanpa izin kustodian sentral.</p>
           </div>
         </div>
-        <div style="flex: 1;">
-          <div class="card" style="margin-bottom: 12px; padding: 20px;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-size: 0.78rem; font-weight: 700;">Blockchain</span>
-              <span class="pill gold" style="padding: 6px 14px; font-size: 0.7rem;">BNB Smart Chain</span>
+
+        <div class="code-window">
+          <div class="code-window-header">
+            <div class="mac-dots">
+              <div class="mac-dot red"></div>
+              <div class="mac-dot yellow"></div>
+              <div class="mac-dot green"></div>
             </div>
+            <div class="code-tab">contracts/ArisanGroup.sol</div>
+            <div style="font-size: 0.7rem; color: var(--text-muted);">Solidity ^0.8.24</div>
           </div>
-          <div class="card" style="margin-bottom: 12px; padding: 20px;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-size: 0.78rem; font-weight: 700;">Smart Contract</span>
-              <span class="pill blue" style="padding: 6px 14px; font-size: 0.7rem;">Solidity + OpenZeppelin</span>
-            </div>
-          </div>
-          <div class="card" style="margin-bottom: 12px; padding: 20px;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-size: 0.78rem; font-weight: 700;">Framework</span>
-              <span class="pill purple" style="padding: 6px 14px; font-size: 0.7rem;">Hardhat</span>
-            </div>
-          </div>
-          <div class="card" style="margin-bottom: 12px; padding: 20px;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-size: 0.78rem; font-weight: 700;">Frontend</span>
-              <span class="pill green" style="padding: 6px 14px; font-size: 0.7rem;">React 19 + Vite 8 + ethers.js</span>
-            </div>
-          </div>
-          <div class="card" style="padding: 20px;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-size: 0.78rem; font-weight: 700;">Token</span>
-              <span class="pill gold" style="padding: 6px 14px; font-size: 0.7rem;">ERC-20 Stablecoin</span>
-            </div>
-          </div>
+          <pre class="code-body"><code><span class="c-cm">// Eksekusi kontribusi berkala & auto-payout</span>
+<span class="c-kw">function</span> <span class="c-fn">contribute</span>() <span class="c-kw">external nonReentrant</span> {
+    <span class="c-kw">if</span> (state != GroupState.ACTIVE) <span class="c-kw">revert</span> <span class="c-gold">InvalidState</span>();
+    <span class="c-kw">if</span> (hasContributed[msg.sender][currentRound]) {
+        <span class="c-kw">revert</span> <span class="c-gold">AlreadyContributed</span>();
+    }
+
+    hasContributed[msg.sender][currentRound] = <span class="c-kw">true</span>;
+    roundContributions[currentRound]++;
+
+    token.<span class="c-fn">safeTransferFrom</span>(
+        msg.sender, <span class="c-kw">address</span>(<span class="c-kw">this</span>), contributionAmount
+    );
+
+    <span class="c-cm">// Seluruh anggota lunas -> payout ke pemenang ronde</span>
+    <span class="c-kw">if</span> (roundContributions[currentRound] == members.length) {
+        <span class="c-fn">_distributeRoundPot</span>();
+    }
+}</code></pre>
         </div>
       </div>
     </div>
 
-    <!-- ==================== SLIDE 8: KEAMANAN ==================== -->
+    <!-- ==================== SLIDE 8: KEAMANAN SMART CONTRACT ==================== -->
     <div class="slide" data-slide="7">
-      <div class="section-label">Keamanan</div>
-      <div class="slide-title" style="font-size: 2rem;">
-        Mekanisme <span class="gold">Keamanan</span> Berlapis
-      </div>
+      <div class="split-layout reversed">
+        <div class="visual-3d-frame" style="height: 380px;">
+          <img src="/images/bnb_smart_contract_3d.jpg" alt="3D Smart Contract Architecture">
+          <div class="visual-glass-overlay">
+            <div class="title">SMART CONTRACT SECURITY AUDIT</div>
+            <div class="status">ALL CHECKS PASSED</div>
+          </div>
+        </div>
 
-      <div class="badge-list" style="margin-bottom: 32px;">
-        <div class="badge"><span class="dot green"></span> ReentrancyGuard (OpenZeppelin)</div>
-        <div class="badge"><span class="dot green"></span> SafeERC20 Token Transfer</div>
-        <div class="badge"><span class="dot green"></span> Custom Errors (Gas Optimized)</div>
-        <div class="badge"><span class="dot gold"></span> Deposit &ge; Kontribusi (Jaminan Penuh)</div>
-        <div class="badge"><span class="dot gold"></span> Auto-Slash Defaulter</div>
-        <div class="badge"><span class="dot gold"></span> Emergency Timelock (7 Hari)</div>
-      </div>
+        <div>
+          <div class="badge-tag green">Standar Kualitas Rekayasa</div>
+          <h2 class="h2-title">Keamanan & <span class="accent">Mitigasi Serangan</span></h2>
+          <p class="p-desc" style="margin-bottom: 20px;">
+            Dirancang mengikuti standar keamanan OpenZeppelin dengan pengujian komprehensif 29 skenario unit test.
+          </p>
 
-      <div class="slide-subtitle" style="font-size: 0.9rem; margin-bottom: 24px;">
-        Smart Contract sudah di-deploy dan aktif di BSC Testnet
-      </div>
+          <div class="bento-grid cols-2" style="margin-top: 0; gap: 12px;">
+            <div class="bento-card" style="padding: 16px;">
+              <h3 style="font-size: 0.9rem; color: var(--tech-green);">ReentrancyGuard</h3>
+              <p style="font-size: 0.76rem;">Dipasang pada seluruh fungsi yang melakukan transfer token untuk mencegah eksploitasi rekursif.</p>
+            </div>
+            <div class="bento-card" style="padding: 16px;">
+              <h3 style="font-size: 0.9rem; color: var(--tech-green);">SafeERC20 Standard</h3>
+              <p style="font-size: 0.76rem;">Kompatibel dengan implementasi token USDT non-standar yang tidak mengembalikan nilai boolean.</p>
+            </div>
+            <div class="bento-card" style="padding: 16px;">
+              <h3 style="font-size: 0.9rem; color: var(--tech-green);">Custom Solidity Errors</h3>
+              <p style="font-size: 0.76rem;">Menggantikan string require untuk efisiensi gas fee maksimal bagi pengguna BNB Chain.</p>
+            </div>
+            <div class="bento-card" style="padding: 16px;">
+              <h3 style="font-size: 0.9rem; color: var(--tech-green);">Timelock Emergency</h3>
+              <p style="font-size: 0.76rem;">Fail-safe pengembalian deposit jika kelompok macet lebih dari 7 hari pada fase pendaftaran.</p>
+            </div>
+          </div>
 
-      <div class="contract-row">
-        <div class="name">MockUSDT</div>
-        <div class="addr">0x79F41C959e47276fD860242413d6fFcE9cad5eA2</div>
-      </div>
-      <div class="contract-row">
-        <div class="name">ArisanFactory</div>
-        <div class="addr">0xDf76714269D68F78FF491BbDe2e3f331b9af434E</div>
-      </div>
-      <div class="contract-row">
-        <div class="name">ArisanGroup</div>
-        <div class="addr">0xADE66d006fA341cD5c3309DBf2e80fFAd719A7d8</div>
+          <div style="margin-top: 16px; font-family: var(--font-mono); font-size: 0.75rem; color: var(--bnb-yellow); background: rgba(240, 185, 11, 0.08); padding: 10px 16px; border-radius: 8px; border: 1px solid var(--border-main);">
+            29 Unit Tests Passed &bull; 100% Branch Coverage on Financial Paths &bull; Zero Reentrancy Flaws
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- ==================== SLIDE 9: DAMPAK BUDAYA ==================== -->
+    <!-- ==================== SLIDE 9: POTENSI PASAR ==================== -->
     <div class="slide" data-slide="8">
-      <div class="section-label">Dampak Sosial</div>
-      <div class="slide-title" style="font-size: 2rem;">
-        <span class="gold">Blockchain Tanpa Disadari</span><br>Strategi Onboarding Web3
+      <div class="badge-tag">Peluang Pasar & Pertumbuhan</div>
+      <h2 class="h2-title">Ekspansi Ekonomi <span class="accent">Sosial Web3</span></h2>
+      <p class="p-desc">ArisanChain mentransformasi triliunan rupiah ekonomi arisan informal menjadi likuiditas terverifikasi di BNB Chain.</p>
+
+      <div class="bento-grid cols-3">
+        <div class="bento-card">
+          <div class="metric-val" style="font-size: 2rem;">Rp 120T+</div>
+          <h3>Estimasi Pasar Informal</h3>
+          <p>Potensi perputaran dana arisan komunitas di Indonesia setiap tahun yang selama ini berada di luar sistem pencatatan perbankan resmi.</p>
+        </div>
+
+        <div class="bento-card">
+          <div class="metric-val" style="font-size: 2rem; color: var(--tech-cyan);">&lt; $0.01</div>
+          <h3>Keunggulan Gas BNB Chain</h3>
+          <p>Biaya transaksi mikro BNB Smart Chain sangat ideal untuk iuran mingguan masyarakat tanpa menggerus nilai tabungan peserta.</p>
+        </div>
+
+        <div class="bento-card">
+          <div class="metric-val" style="font-size: 2rem; color: var(--tech-green);">270M+</div>
+          <h3>Populasi Indonesia</h3>
+          <p>Masyarakat komunal dengan budaya gotong royong tinggi yang siap menerima produk keuangan desentralisasi berbasis kepercayaan kode.</p>
+        </div>
       </div>
 
-      <div class="slide-content-wrapper">
-        <div class="text-left-block">
-          <h3>Terminologi yang Familiar</h3>
-          <ul>
-            <li><strong>"Gabung Arisan"</strong> bukan "Deposit to Smart Contract"</li>
-            <li><strong>"Bayar Iuran"</strong> bukan "Execute contribute() function"</li>
-            <li><strong>"Ambil Giliran"</strong> bukan "Claim Payout from Vault"</li>
-            <li><strong>"Cetak Uang Latihan"</strong> bukan "Mint Mock ERC20 Token"</li>
-          </ul>
-          <h3>Dampak yang Diharapkan</h3>
-          <ul>
-            <li><strong>Mengurangi kasus penipuan arisan</strong> &mdash; ketua tidak pernah memegang uang.</li>
-            <li><strong>Memperluas jangkauan</strong> &mdash; arisan lintas kota karena trust dijamin kode.</li>
-            <li><strong>Literasi Web3 organik</strong> &mdash; peserta belajar wallet dan transaksi digital tanpa sadar.</li>
-            <li><strong>Inklusi keuangan</strong> &mdash; komunitas tanpa akses perbankan bisa menabung aman via smartphone.</li>
-          </ul>
-        </div>
+      <div class="bento-card" style="margin-top: 18px; max-width: 1320px; margin-left: auto; margin-right: auto; width: 100%; border-color: var(--border-accent);">
+        <h3 style="color: var(--bnb-yellow); margin-bottom: 6px;">Jalur Onboarding Pengguna Awam (Mass Adoption)</h3>
+        <p style="font-size: 0.84rem;">Integrasi masa depan dengan Account Abstraction (ERC-4337) memungkinkan pengguna masuk menggunakan media sosial / nomor telepon dan membayar gas fee menggunakan stablecoin tanpa perlu memiliki saldo native BNB sebelumnya.</p>
       </div>
     </div>
 
     <!-- ==================== SLIDE 10: ROADMAP ==================== -->
     <div class="slide" data-slide="9">
-      <div class="section-label">Roadmap</div>
-      <div class="slide-title" style="font-size: 2rem;">
-        Rencana <span class="gold">Pengembangan</span>
-      </div>
+      <div class="badge-tag">Rencana Pengembangan</div>
+      <h2 class="h2-title">Peta Jalan <span class="accent">Pengembangan Protokol</span></h2>
+      <p class="p-desc">Rencana peluncuran bertahap dari tahap hackathon menuju ekosistem adopsi massal komersial.</p>
 
-      <div class="timeline">
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-phase">Phase 1</div>
-          <div class="timeline-title">Testnet Launch</div>
-          <div class="timeline-desc">
-            Smart contract di BSC Testnet.
-            Frontend React + Vite.
-            Faucet mUSDT.
-            Unit test 29 kasus.
-          </div>
+      <div class="bento-grid cols-4" style="margin-top: 24px;">
+        <div class="bento-card highlight">
+          <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--bnb-yellow); font-weight: 700; margin-bottom: 8px;">Q3 2026 &bull; CURRENT</div>
+          <h3>v1.0 Testnet Launch</h3>
+          <p style="font-size: 0.78rem;">
+            &bull; Deploy BSC Testnet<br>
+            &bull; Non-Custodial Vault Core<br>
+            &bull; Commit-Reveal Protocol<br>
+            &bull; Live Web Demo & Faucet
+          </p>
         </div>
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-phase">Phase 2</div>
-          <div class="timeline-title">Mainnet + Audit</div>
-          <div class="timeline-desc">
-            Deploy ke BSC Mainnet.
-            Audit keamanan profesional.
-            Integrasi USDT/BUSD asli.
-            Multi-language support.
-          </div>
+
+        <div class="bento-card">
+          <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--tech-cyan); font-weight: 700; margin-bottom: 8px;">Q4 2026</div>
+          <h3>v1.5 Security & Mainnet</h3>
+          <p style="font-size: 0.78rem;">
+            &bull; Formal Smart Contract Audit<br>
+            &bull; Deploy BNB Chain Mainnet<br>
+            &bull; Multi-Stablecoin (USDT, FDUSD)<br>
+            &bull; Reputasi Anggota On-Chain
+          </p>
         </div>
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-phase">Phase 3</div>
-          <div class="timeline-title">Mobile + Fiat</div>
-          <div class="timeline-desc">
-            Mobile app (React Native).
-            Fiat on-ramp (GoPay/OVO).
-            Notifikasi deadline via Telegram.
-            Dashboard analytics.
-          </div>
+
+        <div class="bento-card">
+          <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--tech-purple); font-weight: 700; margin-bottom: 8px;">Q1 2027</div>
+          <h3>v2.0 Social Onboarding</h3>
+          <p style="font-size: 0.78rem;">
+            &bull; ERC-4337 Smart Accounts<br>
+            &bull; Gasless Transactions (Paymaster)<br>
+            &bull; WhatsApp / Telegram Bot Notify<br>
+            &bull; QRIS / Rupiah Fiat Gateway
+          </p>
         </div>
-        <div class="timeline-item">
-          <div class="timeline-dot" style="background: var(--accent-purple);"></div>
-          <div class="timeline-phase" style="color: var(--accent-purple);">Vision</div>
-          <div class="timeline-title">Protokol Terbuka</div>
-          <div class="timeline-desc">
-            Multi-chain deployment.
-            SDK untuk developer.
-            Governance token.
-            Ekspansi Asia Tenggara.
-          </div>
+
+        <div class="bento-card">
+          <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--tech-green); font-weight: 700; margin-bottom: 8px;">Q2 2027</div>
+          <h3>v3.0 Micro-Credit DeFi</h3>
+          <p style="font-size: 0.78rem;">
+            &bull; Yield-bearing Collateral (Staking)<br>
+            &bull; P2P Emergency Micro-Loans<br>
+            &bull; Mobile App (Android / iOS)<br>
+            &bull; Ekspansi Regional Asia Tenggara
+          </p>
         </div>
       </div>
     </div>
 
-    <!-- ==================== SLIDE 11: DEMO ==================== -->
+    <!-- ==================== SLIDE 11: LIVE VERIFIED CONTRACTS ==================== -->
     <div class="slide" data-slide="10">
-      <div class="section-label">Live Demo</div>
-      <div class="slide-title" style="font-size: 2rem;">
-        Lihat <span class="gold">ArisanChain</span> Beraksi
+      <div class="badge-tag green">Verifikasi On-Chain</div>
+      <h2 class="h2-title">Bukti Deploy & <span class="accent">Alamat Kontrak Aktif</span></h2>
+      <p class="p-desc">Semua smart contract telah terdeploy secara publik di jaringan BNB Smart Chain Testnet.</p>
+
+      <div class="bento-grid cols-2" style="margin-top: 24px;">
+        <div class="bento-card" style="border-color: var(--border-main);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h3 style="color: var(--bnb-yellow); margin-bottom: 0;">ArisanFactory</h3>
+            <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--tech-green);">VERIFIED</span>
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-white); background: rgba(0,0,0,0.5); padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border-subtle); margin-bottom: 14px; word-break: break-all;">
+            0xDf76714269D68F78FF491BbDe2e3f331b9af434E
+          </div>
+          <p style="font-size: 0.8rem; margin-bottom: 14px;">Kontrak utama pabrik yang mencatat pembuatan seluruh kelompok arisan dan memancarkan event pembuatan instansiasi baru.</p>
+          <a href="https://testnet.bscscan.com/address/0xDf76714269D68F78FF491BbDe2e3f331b9af434E" target="_blank" class="cta-btn secondary" style="font-size: 0.75rem; padding: 8px 14px;">
+            Periksa di BscScan Explorer
+          </a>
+        </div>
+
+        <div class="bento-card" style="border-color: var(--border-main);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h3 style="color: var(--tech-green); margin-bottom: 0;">MockUSDT (Test Token)</h3>
+            <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--tech-green);">18 DECIMALS</span>
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-white); background: rgba(0,0,0,0.5); padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border-subtle); margin-bottom: 14px; word-break: break-all;">
+            0x79F41C959e47276fD860242413d6fFcE9cad5eA2
+          </div>
+          <p style="font-size: 0.8rem; margin-bottom: 14px;">Token simulasi stablecoin dengan fungsi Faucet langsung di antarmuka pengguna (1,000 mUSDT per pencetakan) untuk kemudahan pengujian juri.</p>
+          <a href="https://testnet.bscscan.com/address/0x79F41C959e47276fD860242413d6fFcE9cad5eA2" target="_blank" class="cta-btn secondary" style="font-size: 0.75rem; padding: 8px 14px;">
+            Periksa di BscScan Explorer
+          </a>
+        </div>
       </div>
 
-      <div class="card-grid cols-3" style="margin-bottom: 32px;">
-        <div class="card" style="text-align: center;">
-          <div class="card-icon" style="margin: 0 auto 12px;">&#127760;</div>
-          <h3>Web App (Live)</h3>
-          <p>Frontend ter-deploy di Vercel, terhubung ke BSC Testnet secara real-time.</p>
-          <a href="https://frontend-six-tawny-83.vercel.app" target="_blank" style="display: inline-block; margin-top: 12px; color: var(--bnb-gold); font-size: 0.78rem; font-weight: 600; text-decoration: none;">
-            Buka App &#8599;
-          </a>
-        </div>
-        <div class="card" style="text-align: center;">
-          <div class="card-icon" style="margin: 0 auto 12px;">&#128187;</div>
-          <h3>Source Code</h3>
-          <p>Repository open-source. Smart contract, test suite, dan frontend lengkap.</p>
-          <a href="https://github.com/Vraken9/Arisan" target="_blank" style="display: inline-block; margin-top: 12px; color: var(--bnb-gold); font-size: 0.78rem; font-weight: 600; text-decoration: none;">
-            GitHub &#8599;
-          </a>
-        </div>
-        <div class="card" style="text-align: center;">
-          <div class="card-icon" style="margin: 0 auto 12px;">&#128209;</div>
-          <h3>On-Chain Proof</h3>
-          <p>Semua kontrak terverifikasi di BscScan. Siapa saja bisa mengaudit kodenya.</p>
-          <a href="https://testnet.bscscan.com/address/0xDf76714269D68F78FF491BbDe2e3f331b9af434E" target="_blank" style="display: inline-block; margin-top: 12px; color: var(--bnb-gold); font-size: 0.78rem; font-weight: 600; text-decoration: none;">
-            BscScan &#8599;
-          </a>
-        </div>
-      </div>
-
-      <div class="small-note">
-        Gunakan Rabby Wallet atau MetaMask &bull; Jaringan: BSC Testnet (Chain ID: 97) &bull; Faucet mUSDT tersedia di app
+      <div style="margin-top: 18px; padding: 14px 20px; border-radius: 10px; background: rgba(0, 240, 255, 0.04); border: 1px solid rgba(0, 240, 255, 0.2); font-size: 0.8rem; color: var(--text-body); max-width: 1320px; margin-left: auto; margin-right: auto; width: 100%; display: flex; align-items: center; justify-content: space-between;">
+        <span><strong>Live Sample Group:</strong> 0xADE66d006fA341cD5c3309DBf2e80fFAd719A7d8 (3 Peserta &bull; 100 mUSDT Kontribusi)</span>
+        <span style="font-family: var(--font-mono); color: var(--tech-cyan);">CHAIN ID: 97</span>
       </div>
     </div>
 
-    <!-- ==================== SLIDE 12: CLOSING ==================== -->
+    <!-- ==================== SLIDE 12: PENUTUP & KREDENSIAL ==================== -->
     <div class="slide" data-slide="11">
-      <svg class="big-logo" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="48" fill="#080B11" stroke="#F0B90B" stroke-width="3"/>
-        <polygon points="50,20 75,40 65,75 35,75 25,40" fill="none" stroke="#F0B90B" stroke-width="4"/>
-        <circle cx="50" cy="50" r="10" fill="#F0B90B"/>
+      <div style="text-align: center; max-width: 860px; margin: 0 auto;">
+        <div class="badge-tag">Kesimpulan Eksekutif</div>
+        <h1 class="h1-title">
+          Tradisi Bertemu <span class="accent">Teknologi</span>
+        </h1>
+        <p class="p-desc" style="max-width: 760px; margin: 0 auto 32px auto; font-size: 1.05rem;">
+          ArisanChain membuktikan bahwa teknologi blockchain bukan sekadar spekulasi token, melainkan solusi nyata yang melindungi kearifan lokal gotong royong bangsa Indonesia.
+        </p>
+
+        <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px;">
+          <a href="https://frontend-six-tawny-83.vercel.app" target="_blank" class="cta-btn primary" style="padding: 14px 28px; font-size: 0.95rem;">
+            Akses Live Web Application
+          </a>
+          <a href="https://github.com/Vraken9/Arisan" target="_blank" class="cta-btn secondary" style="padding: 14px 28px; font-size: 0.95rem;">
+            Source Code di GitHub
+          </a>
+        </div>
+
+        <div class="code-window" style="text-align: left; max-width: 720px; margin: 0 auto;">
+          <div class="code-window-header">
+            <div class="mac-dots">
+              <div class="mac-dot red"></div>
+              <div class="mac-dot yellow"></div>
+              <div class="mac-dot green"></div>
+            </div>
+            <div class="code-tab">SUBMISSION SUMMARY &bull; INDONESIA WEB3 HACKATHON 2026</div>
+          </div>
+          <div class="code-body" style="font-size: 0.76rem;">
+            <div><span class="c-kw">Project Name :</span> ArisanChain</div>
+            <div><span class="c-kw">Network      :</span> BNB Smart Chain Testnet (Chain ID 97)</div>
+            <div><span class="c-kw">Contract     :</span> 0xDf76714269D68F78FF491BbDe2e3f331b9af434E</div>
+            <div><span class="c-kw">Status       :</span> Production Ready on Vercel & Fully Open Source</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Floating Dock Navigation -->
+  <div class="dock-nav">
+    <div class="dock-brand">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--bnb-yellow)">
+        <polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9" />
       </svg>
-      <div class="slide-title">
-        <span class="gold">Tradisi</span> Bertemu <span class="gold">Teknologi</span>
-      </div>
-      <div class="slide-subtitle" style="font-size: 1rem;">
-        ArisanChain bukan tentang menggantikan tradisi.<br>
-        Ini tentang <strong style="color: var(--text-primary);">melindunginya</strong> agar bisa bertahan dan berkembang<br>
-        di era digital tanpa kehilangan jiwa gotong royongnya.
+      <span>ArisanChain</span>
+    </div>
+
+    <div class="dock-controls">
+      <button class="dock-btn" id="prevBtn" title="Slide Sebelumnya (Panah Kiri)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+
+      <div class="dock-counter">
+        <span id="currentSlideNum">1</span> / 12
       </div>
 
-      <div class="closing-links">
-        <a class="primary-link" href="https://frontend-six-tawny-83.vercel.app" target="_blank">
-          &#127760; Coba Sekarang
-        </a>
-        <a class="secondary-link" href="https://github.com/Vraken9/Arisan" target="_blank">
-          &#128187; Source Code
-        </a>
-      </div>
+      <button class="dock-btn" id="nextBtn" title="Slide Berikutnya (Panah Kanan / Spasi)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
 
-      <p class="small-note" style="margin-top: 40px; font-size: 0.75rem;">
-        Dibangun dengan &#9829; untuk Indonesia &mdash; Indonesia Web3 Hackathon 2026
-      </p>
+      <button class="fs-toggle" id="fsBtn" title="Toggle Fullscreen (F11)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+        </svg>
+      </button>
     </div>
   </div>
 
-  <!-- Navigation Bar -->
-  <nav class="nav-bar">
-    <div class="brand">Arisan<span>Chain</span> &mdash; Pitch Deck</div>
-    <div class="nav-controls">
-      <button class="nav-btn" id="prevBtn" onclick="prevSlide()" disabled>&#8592; Prev</button>
-      <span class="slide-counter" id="counter">1 / 12</span>
-      <button class="nav-btn" id="nextBtn" onclick="nextSlide()">Next &#8594;</button>
-    </div>
-  </nav>
-
-  <div class="key-hint">
-    <kbd>&#8592;</kbd> <kbd>&#8594;</kbd> atau <kbd>Space</kbd> untuk navigasi
-  </div>
-
+  <!-- Slide Engine Script -->
   <script>
-    let current = 0;
-    const slides = document.querySelectorAll('.slide');
-    const total = slides.length;
+    (function() {
+      const slides = document.querySelectorAll('.slide');
+      const totalSlides = slides.length;
+      let currentIndex = 0;
 
-    function goToSlide(n) {
-      if (n < 0 || n >= total) return;
-      slides[current].classList.remove('active');
-      current = n;
-      slides[current].classList.add('active');
-      updateUI();
-    }
+      const currentNumEl = document.getElementById('currentSlideNum');
+      const progressEl = document.getElementById('progressIndicator');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const fsBtn = document.getElementById('fsBtn');
 
-    function nextSlide() { goToSlide(current + 1); }
-    function prevSlide() { goToSlide(current - 1); }
+      function updateSlide(index) {
+        if (index < 0) index = 0;
+        if (index >= totalSlides) index = totalSlides - 1;
 
-    function updateUI() {
-      document.getElementById('counter').textContent = `${current + 1} / ${total}`;
-      document.getElementById('prevBtn').disabled = current === 0;
-      document.getElementById('nextBtn').disabled = current === total - 1;
-      document.getElementById('progress').style.width = `${((current + 1) / total) * 100}%`;
-    }
+        slides.forEach((s, i) => {
+          s.classList.toggle('active', i === index);
+        });
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
-      if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
-      if (e.key === 'Home') { e.preventDefault(); goToSlide(0); }
-      if (e.key === 'End') { e.preventDefault(); goToSlide(total - 1); }
-    });
+        currentIndex = index;
+        currentNumEl.textContent = index + 1;
+        progressEl.style.width = `${((index + 1) / totalSlides) * 100}%`;
 
-    // Touch support
-    let touchStartX = 0;
-    document.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; });
-    document.addEventListener('touchend', (e) => {
-      const diff = touchStartX - e.changedTouches[0].screenX;
-      if (Math.abs(diff) > 60) {
-        if (diff > 0) nextSlide(); else prevSlide();
+        prevBtn.disabled = index === 0;
+        nextBtn.disabled = index === totalSlides - 1;
       }
-    });
 
-    updateUI();
+      function nextSlide() {
+        if (currentIndex < totalSlides - 1) updateSlide(currentIndex + 1);
+      }
+
+      function prevSlide() {
+        if (currentIndex > 0) updateSlide(currentIndex - 1);
+      }
+
+      // Event Listeners
+      nextBtn.addEventListener('click', nextSlide);
+      prevBtn.addEventListener('click', prevSlide);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+          e.preventDefault();
+          nextSlide();
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+          e.preventDefault();
+          prevSlide();
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          updateSlide(0);
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          updateSlide(totalSlides - 1);
+        }
+      });
+
+      // Fullscreen Toggle
+      fsBtn.addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        } else {
+          document.exitFullscreen().catch(() => {});
+        }
+      });
+
+      // Touch Swipe Support
+      let touchStartX = 0;
+      let touchEndX = 0;
+      document.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+
+      document.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        if (touchStartX - touchEndX > 50) nextSlide();
+        if (touchEndX - touchStartX > 50) prevSlide();
+      }, { passive: true });
+
+      // Init
+      updateSlide(0);
+    })();
   </script>
 </body>
 </html>

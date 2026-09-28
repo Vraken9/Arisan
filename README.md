@@ -4,9 +4,9 @@
   <p><strong>Protokol Arisan Terdesentralisasi dan Trustless pada Jaringan BNB Smart Chain</strong></p>
   <p>Submission Resmi untuk Indonesia Web3 Hackathon 2026</p>
   <p>
-    <a href="https://frontend-six-tawny-83.vercel.app"><strong>🌐 Live App</strong></a> &nbsp;|&nbsp;
-    <a href="https://frontend-six-tawny-83.vercel.app/pitch-deck"><strong> Interactive Pitch Deck (12 Slides)</strong></a> &nbsp;|&nbsp;
-    <a href="https://testnet.bscscan.com/address/0xDf76714269D68F78FF491BbDe2e3f331b9af434E"><strong> BscScan Explorer</strong></a>
+    <a href="https://frontend-six-tawny-83.vercel.app"><strong>Live Web Application</strong></a> &nbsp;|&nbsp;
+    <a href="https://frontend-six-tawny-83.vercel.app/pitch-deck"><strong>Interactive Pitch Deck (12 Slides)</strong></a> &nbsp;|&nbsp;
+    <a href="https://testnet.bscscan.com/address/0xDf76714269D68F78FF491BbDe2e3f331b9af434E"><strong>BscScan Contract Explorer</strong></a>
   </p>
 </div>
 
@@ -18,13 +18,13 @@ ArisanChain adalah implementasi on-chain dari praktik keuangan sosial tradisiona
 
 ### 1.1 Perbandingan Model Konvensional vs ArisanChain
 
-| Parameter | Arisan Konvensional | ArisanChain Protocol |
-|---|---|---|
-| Ketergantungan Kepercayaan | 100% bergantung pada integritas bendahara | Trustless, dieksekusi otomatis oleh Smart Contract |
-| Risiko Peserta Kabur | Tinggi, peserta dapat berhenti setelah menerima dana | Diminimalisir dengan Deposit Jaminan dan Auto-Slash |
-| Penentuan Urutan Pemenang | Rentan manipulasi atau pengocokan manual yang bias | Algoritma Commit-Reveal on-chain yang verifiable |
-| Transparansi Transaksi | Pencatatan manual, rawan selisih | Transparan dan permanen melalui blockchain event log |
-| Pengelolaan Kas | Rekening pribadi pengurus | Smart Contract vault terisolasi (Non-Custodial) |
+| Parameter                  | Arisan Konvensional                                  | ArisanChain Protocol                                 |
+| -------------------------- | ---------------------------------------------------- | ---------------------------------------------------- |
+| Ketergantungan Kepercayaan | 100% bergantung pada integritas bendahara            | Trustless, dieksekusi otomatis oleh Smart Contract   |
+| Risiko Peserta Kabur       | Tinggi, peserta dapat berhenti setelah menerima dana | Diminimalisir dengan Deposit Jaminan dan Auto-Slash  |
+| Penentuan Urutan Pemenang  | Rentan manipulasi atau pengocokan manual yang bias   | Algoritma Commit-Reveal on-chain yang verifiable     |
+| Transparansi Transaksi     | Pencatatan manual, rawan selisih                     | Transparan dan permanen melalui blockchain event log |
+| Pengelolaan Kas            | Rekening pribadi pengurus                            | Smart Contract vault terisolasi (Non-Custodial)      |
 
 ---
 
@@ -188,18 +188,19 @@ sequenceDiagram
 
 Kontrak telah berhasil dikompilasi, diuji, dan dideploy pada jaringan BNB Smart Chain Testnet (Chain ID: 97).
 
-| Nama Kontrak | Alamat Kontrak | Penjelajah Blok (BscScan) |
-|---|---|---|
-| **MockUSDT** | `0x79F41C959e47276fD860242413d6fFcE9cad5eA2` | [BscScan Explorer](https://testnet.bscscan.com/address/0x79F41C959e47276fD860242413d6fFcE9cad5eA2) |
-| **ArisanFactory** | `0xDf76714269D68F78FF491BbDe2e3f331b9af434E` | [BscScan Explorer](https://testnet.bscscan.com/address/0xDf76714269D68F78FF491BbDe2e3f331b9af434E) |
+| Nama Kontrak                  | Alamat Kontrak                               | Penjelajah Blok (BscScan)                                                                          |
+| ----------------------------- | -------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| **MockUSDT**                  | `0x79F41C959e47276fD860242413d6fFcE9cad5eA2` | [BscScan Explorer](https://testnet.bscscan.com/address/0x79F41C959e47276fD860242413d6fFcE9cad5eA2) |
+| **ArisanFactory**             | `0xDf76714269D68F78FF491BbDe2e3f331b9af434E` | [BscScan Explorer](https://testnet.bscscan.com/address/0xDf76714269D68F78FF491BbDe2e3f331b9af434E) |
 | **ArisanGroup (Sampel Live)** | `0xADE66d006fA341cD5c3309DBf2e80fFAd719A7d8` | [BscScan Explorer](https://testnet.bscscan.com/address/0xADE66d006fA341cD5c3309DBf2e80fFAd719A7d8) |
 
 ### Parameter Grup Sampel Terdeploy:
-* **Token:** MockUSDT (`0x79F41C959e47276fD860242413d6fFcE9cad5eA2`)
-* **Kontribusi per Ronde:** 100 mUSDT
-* **Deposit Jaminan:** 100 mUSDT
-* **Kapasitas Anggota:** 3 Peserta
-* **Durasi per Ronde:** 86,400 detik (24 Jam)
+
+- **Token:** MockUSDT (`0x79F41C959e47276fD860242413d6fFcE9cad5eA2`)
+- **Kontribusi per Ronde:** 100 mUSDT
+- **Deposit Jaminan:** 100 mUSDT
+- **Kapasitas Anggota:** 3 Peserta
+- **Durasi per Ronde:** 86,400 detik (24 Jam)
 
 ---
 
@@ -221,11 +222,13 @@ Kontrak telah berhasil dikompilasi, diuji, dan dideploy pada jaringan BNB Smart 
 ## 5. Panduan Instalasi dan Pengujian Lokal
 
 ### 5.1 Prasyarat Sistem
-* Node.js v18.0.0 atau lebih baru
-* npm v9.0.0 atau lebih baru
-* Ekstensi browser MetaMask
+
+- Node.js v18.0.0 atau lebih baru
+- npm v9.0.0 atau lebih baru
+- Ekstensi browser MetaMask
 
 ### 5.2 Instalasi Dependensi
+
 ```bash
 # Clone repository
 git clone https://github.com/Vraken9/Arisan.git
@@ -241,6 +244,7 @@ cd ..
 ```
 
 ### 5.3 Kompilasi dan Unit Test Kontrak
+
 ```bash
 # Kompilasi Smart Contract
 npx hardhat compile
@@ -250,10 +254,13 @@ npx hardhat test
 ```
 
 ### 5.4 Eksekusi Script Simulasi Demo (Lokal)
+
 ```bash
 npx hardhat run scripts/demo.js
 ```
+
 Script demo mengeksekusi dua skenario:
+
 1. Skenario Operasional Normal: Pendaftaran, pengacakan Commit-Reveal, kontribusi tepat waktu, dan pencairan pot.
 2. Skenario Penalti Gagal Bayar: Eksekusi pemotongan deposit jaminan saat peserta melebihi batas waktu deadline.
 
@@ -271,6 +278,7 @@ npm run frontend
 Akses browser pada alamat: **`http://localhost:5173`**
 
 ### Panduan Interaksi Frontend:
+
 1. Hubungkan MetaMask ke jaringan **BNB Smart Chain Testnet** (Chain ID: `97`, RPC: `https://data-seed-prebsc-1-s1.binance.org:8545`).
 2. Gunakan tombol **Faucet mUSDT** pada navigasi atas untuk mencetak token percobaan sebesar 1,000 mUSDT langsung ke alamat wallet Anda.
 3. Masuk ke ruang arisan yang terdaftar atau inisiasi grup baru melalui tombol **Buat Grup Baru**.
